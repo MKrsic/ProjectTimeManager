@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTimeManager", "Proje
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTimeManager.Tests", "ProjectTimeManager.Tests\ProjectTimeManager.Tests.csproj", "{ED4C10A3-37CD-4AC1-B6A5-965B28AB8478}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTimeManager.Model", "ProjectTimeManager.Model\ProjectTimeManager.Model.csproj", "{58E7E62C-8BD5-45B6-A4E7-D8F35C0A6E60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTimeManager.DAL", "ProjectTimeManager.DAL\ProjectTimeManager.DAL.csproj", "{A6EEFDDC-ADDC-4214-9002-97867EFB8878}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{ED4C10A3-37CD-4AC1-B6A5-965B28AB8478}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED4C10A3-37CD-4AC1-B6A5-965B28AB8478}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED4C10A3-37CD-4AC1-B6A5-965B28AB8478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58E7E62C-8BD5-45B6-A4E7-D8F35C0A6E60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58E7E62C-8BD5-45B6-A4E7-D8F35C0A6E60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58E7E62C-8BD5-45B6-A4E7-D8F35C0A6E60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58E7E62C-8BD5-45B6-A4E7-D8F35C0A6E60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6EEFDDC-ADDC-4214-9002-97867EFB8878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6EEFDDC-ADDC-4214-9002-97867EFB8878}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6EEFDDC-ADDC-4214-9002-97867EFB8878}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6EEFDDC-ADDC-4214-9002-97867EFB8878}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

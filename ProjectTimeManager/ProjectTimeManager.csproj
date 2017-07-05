@@ -209,6 +209,16 @@
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.1.0.2359\analyzers\SonarAnalyzer.CSharp.dll" />
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.1.0.2359\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectTimeManager.DAL\ProjectTimeManager.DAL.csproj">
+      <Project>{a6eefddc-addc-4214-9002-97867efb8878}</Project>
+      <Name>ProjectTimeManager.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectTimeManager.Model\ProjectTimeManager.Model.csproj">
+      <Project>{58e7e62c-8bd5-45b6-a4e7-d8f35c0a6e60}</Project>
+      <Name>ProjectTimeManager.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
