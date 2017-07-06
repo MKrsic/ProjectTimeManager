@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectTimeManager.Model
 {
@@ -16,5 +12,11 @@ namespace ProjectTimeManager.Model
         [Required]
         [Display(Name = "Prezime")]
         public string LastName { get; set; }
+
+        //public virtual ProjectMember ProjectMembers { get; set; }
+        //public virtual TimeTrack TimeTracks { get; set; }
+
+        public virtual ICollection<ProjectMember> ProjectMembers { get; set; }
+        public virtual ICollection<TimeTrack> TimeTracks { get; set; }
     }
 }

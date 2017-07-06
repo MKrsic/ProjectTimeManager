@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectTimeManager.Model
 {
-    public class TimeTrack
+    public class TimeTrack : EntityBase
     {
-        [Key]
-        public int ID { get; set; }
-
         [ForeignKey("Project")]
         public int Project_ID { get; set; }
 
