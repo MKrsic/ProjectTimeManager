@@ -16,44 +16,14 @@ namespace ProjectTimeManager.Controllers
     {
         private readonly ProjectTimeManagerDbContext db = new ProjectTimeManagerDbContext();
 
-        //// GET: ProjectMembers
-        //public ActionResult Index()
-        //{
-        //    var projectMember = db.ProjectMember.Include(p => p.Person).Include(p => p.Project);
-        //    return View(projectMember.ToList());
-        //}
-
-        public ActionResult Index(int id)
+        // GET: ProjectMembers
+        public ActionResult Index()
         {
-            var projectMembers = db.ProjectMember
+            var projectMember = db.ProjectMember
                 .Include(p => p.Person)
                 .Include(p => p.Project)
-                .Where(p => p.Project_ID == id);
-
-            var timeTrack = db.TimeTrack
-                .Include(p => p.Person)
-                .Include(p => p.Project)
-                .Where(p => p.Project_ID == id)
-                .GroupBy(p => p.Person_ID)
-                .ToList();
-
-
-            List<ProjectMemberStatVM> projectMemberStat = new List<ProjectMemberStatVM>();
-            foreach (var member in projectMembers)
-            {
-                foreach (var time in timeTrack)
-                {
-                    projectMemberStat.Add(new ProjectMemberStatVM
-                    {
-                        FirstName = member.Person.Name,
-                        LastName = member.Person.LastName,
-                        ProjectName = member.Project.Name,
-                        MemberUsedTime = time.Where(p => p.Person_ID.Equals(member.Person_ID)).Select(p=>p.EndTime - p.StartTime).FirstOrDefault()
-                    });
-                }
-            }
-            return View(projectMembers.ToList());
-
+                .OrderBy(p => p.Project_ID);
+            return View(projectMember.ToList());
         }
 
         // GET: ProjectMembers/Details/5

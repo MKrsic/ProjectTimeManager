@@ -47,9 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201707051717285_Inital.cs" />
-    <Compile Include="Migrations\201707051717285_Inital.Designer.cs">
-      <DependentUpon>201707051717285_Inital.cs</DependentUpon>
+    <Compile Include="Migrations\201707091416138_Initial.cs" />
+    <Compile Include="Migrations\201707091416138_Initial.Designer.cs">
+      <DependentUpon>201707091416138_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ProjectTimeManagerDbContext.cs" />
@@ -76,8 +76,8 @@
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.1.0.2359\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707051717285_Inital.resx">
-      <DependentUpon>201707051717285_Inital.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201707091416138_Initial.resx">
+      <DependentUpon>201707091416138_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -148,6 +148,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MemberTimeTrackController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\ProjectMembersController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
@@ -209,6 +210,7 @@
     <Content Include="Views\ProjectMembers\Details.cshtml" />
     <Content Include="Views\ProjectMembers\Edit.cshtml" />
     <Content Include="Views\ProjectMembers\Index.cshtml" />
+    <Content Include="Views\MemberTimeTrack\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
