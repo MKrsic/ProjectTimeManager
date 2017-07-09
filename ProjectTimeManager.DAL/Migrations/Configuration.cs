@@ -47,7 +47,11 @@ namespace ProjectTimeManager.DAL.Migrations
                 new TimeTrack { Person_ID = 1, Project_ID = 3, StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), CreatedAt = DateTime.Now },
                 new TimeTrack { Person_ID = 2, Project_ID = 1, StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), CreatedAt = DateTime.Now },
                 new TimeTrack { Person_ID = 2, Project_ID = 2, StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), CreatedAt = DateTime.Now },
-                new TimeTrack { Person_ID = 3, Project_ID = 3, StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), CreatedAt = DateTime.Now }
+                new TimeTrack { Person_ID = 3, Project_ID = 3, StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), CreatedAt = DateTime.Now },
+                new TimeTrack { Person_ID = 1, Project_ID = 1, StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), CreatedAt = DateTime.Now },
+                new TimeTrack { Person_ID = 1, Project_ID = 1, StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), CreatedAt = DateTime.Now },
+                new TimeTrack { Person_ID = 1, Project_ID = 1, StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), CreatedAt = DateTime.Now },
+                new TimeTrack { Person_ID = 2, Project_ID = 1, StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), CreatedAt = DateTime.Now }
             );
 
         }

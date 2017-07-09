@@ -25,15 +25,19 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.Name)
+        </td>*@
+        <td>
+            @*@Html.ActionLink(item.Name, "Index", "ProjectMembers",null, new { id = item.ID })*@
+            @Html.ActionLink(item.Name, "Index" , new { controller = "ProjectMembers", id = item.ID })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CreatedAt)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.UpdatedAt)
-        </td>
+        </td>*@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
             @Html.ActionLink("Details", "Details", new { id=item.ID }) |
