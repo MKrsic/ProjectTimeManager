@@ -8,17 +8,18 @@ using System.Web;
 using System.Web.Mvc;
 using ProjectTimeManager.DAL;
 using ProjectTimeManager.Model;
+using ProjectTimeManager.DAL.Repository;
 
 namespace ProjectTimeManager.Controllers
 {
     public class PeopleController : Controller
     {
-        private readonly ProjectTimeManagerDbContext db = new ProjectTimeManagerDbContext();
+        private readonly PersonRepository db = new PersonRepository();
 
         // GET: People
         public ActionResult Index()
         {
-            return View(db.Person.ToList());
+            return View(db.GetList());
         }
 
         // GET: People/Details/5
@@ -28,7 +29,7 @@ namespace ProjectTimeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Person person = db.Person.Find(id);
+            Person person = db.Find(id.Value);
             if (person == null)
             {
                 return HttpNotFound();
@@ -47,12 +48,11 @@ namespace ProjectTimeManager.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,LastName,CreatedAt,UpdatedAt")] Person person)
+        public ActionResult Create([Bind(Include = "ID,Name,LastName")] Person person)
         {
             if (ModelState.IsValid)
             {
-                db.Person.Add(person);
-                db.SaveChanges();
+                db.Add(person);
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +66,7 @@ namespace ProjectTimeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Person person = db.Person.Find(id);
+            Person person = db.Find(id.Value);
             if (person == null)
             {
                 return HttpNotFound();
@@ -79,12 +79,13 @@ namespace ProjectTimeManager.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,LastName,CreatedAt,UpdatedAt")] Person person)
+        public ActionResult Edit([Bind(Include = "ID,Name,LastName")] Person person)
         {
-            if (ModelState.IsValid)
+            var model = db.Find(person.ID);
+            bool isOk = TryUpdateModel(model);
+            if (ModelState.IsValid && isOk)
             {
-                db.Entry(person).State = EntityState.Modified;
-                db.SaveChanges();
+                db.Update(model);
                 return RedirectToAction("Index");
             }
             return View(person);
@@ -97,7 +98,7 @@ namespace ProjectTimeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Person person = db.Person.Find(id);
+            Person person = db.Find(id.Value);
             if (person == null)
             {
                 return HttpNotFound();
@@ -110,10 +111,12 @@ namespace ProjectTimeManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Person person = db.Person.Find(id);
-            db.Person.Remove(person);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Person person = db.Find(id);
+            bool ok = db.Delete(id);
+            if (ok)
+                return RedirectToAction("Index");
+            else
+                return RedirectToAction("Delete", id);
         }
 
         protected override void Dispose(bool disposing)
