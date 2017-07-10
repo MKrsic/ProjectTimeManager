@@ -9,21 +9,20 @@ using System.Web.Mvc;
 using ProjectTimeManager.DAL;
 using ProjectTimeManager.Model;
 using ProjectTimeManager.Models;
+using ProjectTimeManager.DAL.Repository;
 
 namespace ProjectTimeManager.Controllers
 {
     public class ProjectMembersController : Controller
     {
-        private readonly ProjectTimeManagerDbContext db = new ProjectTimeManagerDbContext();
+        private readonly ProjectMemberRepository ProjectMemberDb = new ProjectMemberRepository();
+        private readonly PersonRepository PersonDb = new PersonRepository();
+        private readonly ProjectRepository ProjectDb = new ProjectRepository();
 
         // GET: ProjectMembers
         public ActionResult Index()
         {
-            var projectMember = db.ProjectMember
-                .Include(p => p.Person)
-                .Include(p => p.Project)
-                .OrderBy(p => p.Project_ID);
-            return View(projectMember.ToList());
+            return View(ProjectMemberDb.GetList());
         }
 
         // GET: ProjectMembers/Details/5
@@ -33,7 +32,7 @@ namespace ProjectTimeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProjectMember projectMember = db.ProjectMember.Find(id);
+            ProjectMember projectMember = ProjectMemberDb.Find(id.Value);
             if (projectMember == null)
             {
                 return HttpNotFound();
@@ -44,8 +43,8 @@ namespace ProjectTimeManager.Controllers
         // GET: ProjectMembers/Create
         public ActionResult Create()
         {
-            ViewBag.Person_ID = new SelectList(db.Person, "ID", "Name");
-            ViewBag.Project_ID = new SelectList(db.Project, "ID", "Name");
+            ViewBag.Person_ID = new SelectList(PersonDb.GetList(), "ID", "Name");
+            ViewBag.Project_ID = new SelectList(ProjectDb.GetList(), "ID", "Name");
             return View();
         }
 
@@ -54,17 +53,16 @@ namespace ProjectTimeManager.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Project_ID,Person_ID,CreatedAt,UpdatedAt")] ProjectMember projectMember)
+        public ActionResult Create([Bind(Include = "ID,Project_ID,Person_ID")] ProjectMember projectMember)
         {
             if (ModelState.IsValid)
             {
-                db.ProjectMember.Add(projectMember);
-                db.SaveChanges();
+                ProjectMemberDb.Add(projectMember);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Person_ID = new SelectList(db.Person, "ID", "Name", projectMember.Person_ID);
-            ViewBag.Project_ID = new SelectList(db.Project, "ID", "Name", projectMember.Project_ID);
+            ViewBag.Person_ID = new SelectList(PersonDb.GetList(), "ID", "Name", projectMember.Person_ID);
+            ViewBag.Project_ID = new SelectList(ProjectDb.GetList(), "ID", "Name", projectMember.Project_ID);
             return View(projectMember);
         }
 
@@ -75,13 +73,13 @@ namespace ProjectTimeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProjectMember projectMember = db.ProjectMember.Find(id);
+            ProjectMember projectMember = ProjectMemberDb.Find(id.Value);
             if (projectMember == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Person_ID = new SelectList(db.Person, "ID", "Name", projectMember.Person_ID);
-            ViewBag.Project_ID = new SelectList(db.Project, "ID", "Name", projectMember.Project_ID);
+            ViewBag.Person_ID = new SelectList(PersonDb.GetList(), "ID", "Name", projectMember.Person_ID);
+            ViewBag.Project_ID = new SelectList(ProjectDb.GetList(), "ID", "Name", projectMember.Project_ID);
             return View(projectMember);
         }
 
@@ -90,16 +88,16 @@ namespace ProjectTimeManager.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Project_ID,Person_ID,CreatedAt,UpdatedAt")] ProjectMember projectMember)
+        public ActionResult Edit([Bind(Include = "ID,Project_ID,Person_ID")] ProjectMember projectMember)
         {
-            if (ModelState.IsValid)
+            bool isOk = TryUpdateModel(projectMember);
+            if (ModelState.IsValid && isOk)
             {
-                db.Entry(projectMember).State = EntityState.Modified;
-                db.SaveChanges();
+                ProjectMemberDb.Update(projectMember);
                 return RedirectToAction("Index");
             }
-            ViewBag.Person_ID = new SelectList(db.Person, "ID", "Name", projectMember.Person_ID);
-            ViewBag.Project_ID = new SelectList(db.Project, "ID", "Name", projectMember.Project_ID);
+            ViewBag.Person_ID = new SelectList(PersonDb.GetList(), "ID", "Name", projectMember.Person_ID);
+            ViewBag.Project_ID = new SelectList(ProjectDb.GetList(), "ID", "Name", projectMember.Project_ID);
             return View(projectMember);
         }
 
@@ -110,7 +108,7 @@ namespace ProjectTimeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProjectMember projectMember = db.ProjectMember.Find(id);
+            ProjectMember projectMember = ProjectMemberDb.Find(id.Value);
             if (projectMember == null)
             {
                 return HttpNotFound();
@@ -123,17 +121,19 @@ namespace ProjectTimeManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ProjectMember projectMember = db.ProjectMember.Find(id);
-            db.ProjectMember.Remove(projectMember);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            ProjectMember projectMember = ProjectMemberDb.Find(id);
+            bool ok = ProjectMemberDb.Delete(id);
+            if (ok)
+                return RedirectToAction("Index");
+            else
+                return RedirectToAction("Delete", id);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                ProjectMemberDb.Dispose();
             }
             base.Dispose(disposing);
         }

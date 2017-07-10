@@ -15,7 +15,7 @@ namespace ProjectTimeManager.DAL.Repository
             return this.DbContext.ProjectMember
                 .Include(per => per.Person)
                 .Include(pro => pro.Project)
-                .OrderBy(i => i.ID)
+                .OrderBy(i => i.Project_ID)
                 .ToList();
         }
 
