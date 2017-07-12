@@ -19,6 +19,15 @@ namespace ProjectTimeManager.DAL.Repository
                 .ToList();
         }
 
+        public List<ProjectMember> GetProjectMembers(int id)
+        {
+            return this.DbContext.ProjectMember
+                .Include(per => per.Person)
+                .Include(pro => pro.Project)
+                .Where(p => p.Project_ID == id)
+                .ToList();
+        }
+
         public override ProjectMember Find(int id)
         {
             return this.DbContext.ProjectMember

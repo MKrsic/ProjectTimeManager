@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using ProjectTimeManager.DAL;
 using ProjectTimeManager.Model;
 using ProjectTimeManager.Models;
+using ProjectTimeManager.DAL.Repository;
 
 namespace ProjectTimeManager.Controllers
 {
@@ -16,22 +17,19 @@ namespace ProjectTimeManager.Controllers
     {
         private readonly ProjectTimeManagerDbContext db = new ProjectTimeManagerDbContext();
 
+        private readonly ProjectMemberRepository ProjectMemberDb = new ProjectMemberRepository();
+        private readonly PersonRepository PersonDb = new PersonRepository();
+        private readonly ProjectRepository ProjectDb = new ProjectRepository();
+        private readonly TimeTrackRepository TimeTrackDb = new TimeTrackRepository();
+
         public ActionResult Index(int id)
         {
-            var projectMembers = db.ProjectMember
-                .Include(p => p.Person)
-                .Include(p => p.Project)
-                .Where(p => p.Project_ID == id)
-                .ToList();
+            var projectMembers = ProjectMemberDb.GetProjectMembers(id);
 
             List<ProjectMemberStatVM> projectMemberStat = new List<ProjectMemberStatVM>();
             foreach (var member in projectMembers)
             {
-                var timeTrackList = db.TimeTrack
-                    .Include(p => p.Person)
-                    .Include(p => p.Project)
-                    .Where(p => p.Project_ID == id)
-                    .ToList();
+                var timeTrackList = TimeTrackDb.GetTimeTrackForProject(id);
 
                 TimeSpan timeTrack = new TimeSpan();
                 foreach (var time in timeTrackList)
@@ -49,6 +47,7 @@ namespace ProjectTimeManager.Controllers
                 });
             }
 
+            ViewBag.ImeProjekta = projectMemberStat.Select(p => p.ProjectName).FirstOrDefault();
             return View(projectMemberStat);
         }
 

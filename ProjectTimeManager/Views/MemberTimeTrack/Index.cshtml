@@ -4,7 +4,7 @@
     ViewBag.Title = "Time spent by member";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.ImeProjekta</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -17,9 +17,9 @@
         <th>
             @Html.DisplayNameFor(model => model.LastName)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.ProjectName)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.MemberUsedTime)
         </th>
@@ -34,9 +34,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.LastName)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.ProjectName)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.MemberUsedTime)
         </td>

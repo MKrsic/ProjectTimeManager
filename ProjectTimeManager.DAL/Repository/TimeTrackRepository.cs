@@ -19,6 +19,15 @@ namespace ProjectTimeManager.DAL.Repository
                 .ToList();
         }
 
+        public List<TimeTrack> GetTimeTrackForProject(int id)
+        {
+            return this.DbContext.TimeTrack
+                .Include(per => per.Person)
+                .Include(pro => pro.Project)
+                .Where(p => p.Project_ID == id)
+                .ToList();
+        }
+
         public override TimeTrack Find(int id)
         {
             return this.DbContext.TimeTrack

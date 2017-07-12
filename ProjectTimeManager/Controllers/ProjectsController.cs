@@ -9,17 +9,41 @@ using System.Web.Mvc;
 using ProjectTimeManager.DAL;
 using ProjectTimeManager.Model;
 using ProjectTimeManager.DAL.Repository;
+using ProjectTimeManager.Models;
 
 namespace ProjectTimeManager.Controllers
 {
     public class ProjectsController : Controller
     {
-        private readonly ProjectRepository db = new ProjectRepository();
+        private readonly ProjectRepository ProjectDb = new ProjectRepository();
+        private readonly TimeTrackRepository TimeTrackDb = new TimeTrackRepository();
 
         // GET: Projects
         public ActionResult Index()
         {
-            return View(db.GetList());
+            var projectTimeTrack = TimeTrackDb.GetList();
+
+            List<ProjectTimeVM> projectStat = new List<ProjectTimeVM>();
+            foreach (var project in projectTimeTrack)
+            {
+                TimeSpan timeTrack = new TimeSpan();
+                if (!projectStat.Any(p => p.Project_ID == project.Project_ID))
+                {
+                    projectStat.Add(new ProjectTimeVM
+                    {
+                        Project_ID = project.Project_ID,
+                        ProjectName = project.Project.Name,
+                        TimeSpent = project.EndTime - project.StartTime
+                    });
+                }
+                else {
+                    ProjectTimeVM tempProject = projectStat.Where(p => p.Project_ID == project.Project_ID).FirstOrDefault();
+                    tempProject.TimeSpent += project.EndTime - project.StartTime;
+                }
+                
+            }
+
+            return View(projectStat);
         }
 
         // GET: Projects/Details/5
@@ -29,7 +53,7 @@ namespace ProjectTimeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Find(id.Value);
+            Project project = ProjectDb.Find(id.Value);
             if (project == null)
             {
                 return HttpNotFound();
@@ -52,7 +76,7 @@ namespace ProjectTimeManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Add(project);
+                ProjectDb.Add(project);
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +90,7 @@ namespace ProjectTimeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Find(id.Value);
+            Project project = ProjectDb.Find(id.Value);
             if (project == null)
             {
                 return HttpNotFound();
@@ -81,11 +105,11 @@ namespace ProjectTimeManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name")] Project project)
         {
-            var model = db.Find(project.ID);
+            var model = ProjectDb.Find(project.ID);
             bool isOk = TryUpdateModel(model);
             if (ModelState.IsValid && isOk)
             {
-                db.Update(model);
+                ProjectDb.Update(model);
                 return RedirectToAction("Index");
             }
             return View(project);
@@ -98,7 +122,7 @@ namespace ProjectTimeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Find(id.Value);
+            Project project = ProjectDb.Find(id.Value);
             if (project == null)
             {
                 return HttpNotFound();
@@ -111,8 +135,8 @@ namespace ProjectTimeManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Project project = db.Find(id);
-            bool ok = db.Delete(id);
+            Project project = ProjectDb.Find(id);
+            bool ok = ProjectDb.Delete(id);
             if (ok)
                 return RedirectToAction("Index");
             else
@@ -123,7 +147,7 @@ namespace ProjectTimeManager.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                ProjectDb.Dispose();
             }
             base.Dispose(disposing);
         }
